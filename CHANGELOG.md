@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ChainstateManager::process_block_header` now returns `Result<ProcessBlockHeaderResult, KernelError>` instead of `ProcessBlockHeaderResult` directly. `Err` indicates an internal failure; `Ok(ProcessBlockHeaderResult::Invalid(state)` indicates the header failed validation.
 - `ProcessBlockHeaderResult::Success` and `ProcessBlockHeaderResult::Failed` renamed to `ProcessBlockHeaderResult::Valid` and `ProcessBlockHeaderResult::Invalid` respectively. `Valid` no longer carries a `BlockValidationState`.
 
+### Removed
+- Removed `ChainstateManagerBuilder::block_tree_db_in_memory`. The upstream kernel replaces the leveldb-based block tree db with a flat file based block tree store that has no in-memory mode (bitcoin/bitcoin#32427), so the underlying `btck_chainstate_manager_options_update_block_tree_db_in_memory` function no longer exists.
+
 ### Fixed
 - `verify` now uses an infallible conversion for the internal `ScriptVerifyStatus`, since an unrecognized status can only indicate a build-time mismatch between the bindings and the vendored `libbitcoinkernel` subtree rather than a runtime condition.
 - `ChainstateManager::get_block_tree_entry` now resolves the requested block instead of returning `None` for every input. It passed the address of the `BlockHash` wrapper to the kernel rather than the block hash handle the wrapper owns, so no lookup ever matched an entry in the block tree.

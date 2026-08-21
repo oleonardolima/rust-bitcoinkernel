@@ -56,7 +56,6 @@ pub struct ChainstateManagerInput {
     pub blocks: Vec<Vec<u8>>,
     pub wipe_block_index: bool,
     pub wipe_chainstate_index: bool,
-    pub block_tree_db_in_memory: bool,
     pub chainstate_db_in_memory: bool,
     pub worker_threads: i32,
 }
@@ -104,7 +103,6 @@ fuzz_target!(|data: ChainstateManagerInput| {
         };
 
     let chainman_builder = chainman_builder
-        .block_tree_db_in_memory(data.block_tree_db_in_memory)
         .chainstate_db_in_memory(data.chainstate_db_in_memory)
         .worker_threads(data.worker_threads);
 
